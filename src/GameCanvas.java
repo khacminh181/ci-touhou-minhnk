@@ -68,7 +68,7 @@ public class GameCanvas extends JPanel{
         backGraphics.drawImage(background, backgroundX,  backgroundY , null);
         backGraphics.drawImage(background, backgroundX,  backgroundY + 3109 , null);
         if (backgroundY > 3109 * -1 ){
-            backgroundY -= 10;
+            backgroundY -= 1;
         }
         else {
             backgroundY = 0;
