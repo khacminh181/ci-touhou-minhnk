@@ -89,6 +89,7 @@ public class GameWindow extends JFrame{
                 canvas.run();
                 canvas.render();
                 lastTimeUpdate = currentTime;
+
             }
         }
     }
