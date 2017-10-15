@@ -1,19 +1,18 @@
+package touhou;
+
 import bases.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-public class Enemy {
+public class EnemyBullet {
     BufferedImage image;
+    public int x;
+    public int y;
+    final int SPEED = 10;
 
-    int x = 0;
-    int y = 0;
-    final int SPEED = 1;
-
-
-    public Enemy() {
-        image = Utils.loadImage("assets/images/enemies/level0/black/0.png");
+    public EnemyBullet() {
+        image = Utils.loadImage("assets/images/enemies/bullets/cyan.png");
     }
 
     public void render(Graphics graphics) {

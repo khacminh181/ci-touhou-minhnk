@@ -1,4 +1,5 @@
-import bases.Utils;
+import touhou.Enemy;
+import touhou.EnemyBullet;
 import touhou.Player;
 import touhou.PlayerSpell;
 
@@ -21,6 +22,7 @@ public class GameCanvas extends JPanel{
     Player player = new Player();
     ArrayList<PlayerSpell> spells = new ArrayList<>();
     Enemy enemy = new Enemy();
+    ArrayList<EnemyBullet> bullets = new ArrayList<>();
 
 
     int backgroundX = 0;
@@ -41,14 +43,14 @@ public class GameCanvas extends JPanel{
         }
     }
 //
-//    public void enemySpawn(int enemyCount, ArrayList<Enemy> Enemies, BufferedImage enemyType) {
+//    public void enemySpawn(int enemyCount, ArrayList<touhou.Enemy> Enemies, BufferedImage enemyType) {
 //        if (blueEnemies.size() == 0) {
 //            for (int i = 0; i < enemyCount; i ++) {
-//                Enemy enemy1 = new Enemy(i*32, 0, enemyType);
+//                touhou.Enemy enemy1 = new touhou.Enemy(i*32, 0, enemyType);
 //                Enemies.add(i,enemy1);
 //            }
 //        }
-//        for (Enemy enemy : Enemies ) {
+//        for (touhou.Enemy enemy : Enemies ) {
 //            backGraphics.drawImage(enemyType, enemy.enemyX, enemy.enemyY, null);
 //            enemy.enemyRun();
 //        }
@@ -64,9 +66,12 @@ public class GameCanvas extends JPanel{
         player.render(backGraphics);
         enemy.render(backGraphics);
 
-
         for (PlayerSpell spell : spells) {
             spell.render(backGraphics);
+        }
+
+        for (EnemyBullet bullet : bullets) {
+            bullet.render(backGraphics);
         }
 
         if (backgroundY > 3109 * -1 ){
@@ -104,9 +109,14 @@ public class GameCanvas extends JPanel{
         player.run();
         player.shoot(spells);
         enemy.run();
+        enemy.shoot(bullets);
 
         for (PlayerSpell spell : spells) {
             spell.run();
+        }
+
+        for (EnemyBullet bullet : bullets) {
+            bullet.run();
         }
     }
 
