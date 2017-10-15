@@ -14,15 +14,13 @@ import java.util.ArrayList;
 public class GameCanvas extends JPanel{
 
     BufferedImage background;
-    BufferedImage blueEnemy;
-    ArrayList<Enemy> blueEnemies = new ArrayList<>();
-    int enemycount = 12;
 
     BufferedImage backBuffer;
     Graphics backGraphics;
 
     Player player = new Player();
     ArrayList<PlayerSpell> spells = new ArrayList<>();
+    Enemy enemy = new Enemy();
 
 
     int backgroundX = 0;
@@ -37,27 +35,25 @@ public class GameCanvas extends JPanel{
         // 2. Load Backgroud
         try {
             background = ImageIO.read(new File("assets/images/background/0.png"));
-            blueEnemy = ImageIO.read(new File("assets/images/enemies/level0/blue/0.png"));
-            System.out.println(background.getHeight());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public void enemySpawn(int enemyCount, ArrayList<Enemy> Enemies, BufferedImage enemyType) {
-        if (blueEnemies.size() == 0) {
-            for (int i = 0; i < enemyCount; i ++) {
-                Enemy enemy1 = new Enemy(i*32, 0, enemyType);
-                Enemies.add(i,enemy1);
-            }
-        }
-        for (Enemy enemy : Enemies ) {
-            backGraphics.drawImage(enemyType, enemy.enemyX, enemy.enemyY, null);
-            enemy.enemyRun();
-        }
-
-    }
+//
+//    public void enemySpawn(int enemyCount, ArrayList<Enemy> Enemies, BufferedImage enemyType) {
+//        if (blueEnemies.size() == 0) {
+//            for (int i = 0; i < enemyCount; i ++) {
+//                Enemy enemy1 = new Enemy(i*32, 0, enemyType);
+//                Enemies.add(i,enemy1);
+//            }
+//        }
+//        for (Enemy enemy : Enemies ) {
+//            backGraphics.drawImage(enemyType, enemy.enemyX, enemy.enemyY, null);
+//            enemy.enemyRun();
+//        }
+//
+//    }
 
 
 
@@ -66,6 +62,8 @@ public class GameCanvas extends JPanel{
         backGraphics.drawImage(background, backgroundX,  backgroundY , null);
         backGraphics.drawImage(background, backgroundX,  backgroundY + 3109 , null);
         player.render(backGraphics);
+        enemy.render(backGraphics);
+
 
         for (PlayerSpell spell : spells) {
             spell.render(backGraphics);
@@ -79,7 +77,7 @@ public class GameCanvas extends JPanel{
         }
 
 
-        enemySpawn(enemycount, blueEnemies, blueEnemy);
+//        enemySpawn(enemycount, blueEnemies, blueEnemy);
 
 
         //2. Call repaint
@@ -105,6 +103,7 @@ public class GameCanvas extends JPanel{
     public void run() {
         player.run();
         player.shoot(spells);
+        enemy.run();
 
         for (PlayerSpell spell : spells) {
             spell.run();

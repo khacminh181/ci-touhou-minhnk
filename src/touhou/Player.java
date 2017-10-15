@@ -28,6 +28,9 @@ public class Player {
     final int TOP = 0;
     final int BOTTOM = 500;
 
+    long shootingTimer = System.nanoTime();
+    long shootingDelay = 100;
+
     public Player() {
         image = Utils.loadImage("assets/images/players/straight/0.png");
     }
@@ -110,11 +113,15 @@ public class Player {
 
     public void shoot(ArrayList<PlayerSpell> spells) {
         if (xPressed) {
-            PlayerSpell newSpell = new PlayerSpell();
-            newSpell.x = x;
-            newSpell.y = y;
+            long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
+            if (elapsed > shootingDelay) {
+                PlayerSpell newSpell = new PlayerSpell();
+                newSpell.x = x;
+                newSpell.y = y;
 
-            spells.add(newSpell);
+                spells.add(newSpell);
+                shootingTimer = System.nanoTime();
+            }
         }
 
     }

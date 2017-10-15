@@ -1,20 +1,26 @@
+import bases.Utils;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Enemy {
-    int enemyX;
-    int enemyY;
-    BufferedImage enemy;
+    BufferedImage image;
 
-    public Enemy(int enemyX, int enemyY, BufferedImage enemy) {
-        this.enemyX = enemyX;
-        this.enemyY = enemyY;
-        this.enemy = enemy;
+    int x = 0;
+    int y = 0;
+    final int SPEED = 1;
+
+
+    public Enemy() {
+        image = Utils.loadImage("assets/images/enemies/level0/black/0.png");
     }
 
-    public void enemyRun() {
-        //this.enemyX++;
-        this.enemyY ++;
+    public void render(Graphics graphics) {
+        graphics.drawImage(image, x, y, null);
     }
 
+    public void run() {
+        y += SPEED;
+    }
 }
