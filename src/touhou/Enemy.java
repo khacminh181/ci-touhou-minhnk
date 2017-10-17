@@ -12,7 +12,13 @@ public class Enemy {
 
     int x = 134;
     int y = 143;
+
     final int SPEED = 2;
+
+    final int LEFT = 0;
+    final int RIGHT = 350;
+    final int TOP = 0;
+    final int BOTTOM = 520;
 
     long shootingTimer = System.nanoTime();
     long shootingDelay = 400;
@@ -82,6 +88,8 @@ public class Enemy {
                 break;
             }
         }
+        x = (int)Utils.clamp(x, LEFT, RIGHT);
+        y = (int)Utils.clamp(y, TOP, BOTTOM);
     }
 
     public void shoot(ArrayList<EnemyBullet> bullets) {

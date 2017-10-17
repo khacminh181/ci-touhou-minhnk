@@ -24,9 +24,9 @@ public class Player {
     final int SPEED = 5; // final = const
 
     final int LEFT = 0;
-    final int RIGHT = 384;
+    final int RIGHT = 360;
     final int TOP = 0;
-    final int BOTTOM = 500;
+    final int BOTTOM = 520;
 
     long shootingTimer = System.nanoTime();
     long shootingDelay = 100;
@@ -106,8 +106,8 @@ public class Player {
         x += vx;
         y += vy;
 
-        x = (int)clamp(x, LEFT, RIGHT);
-        y = (int)clamp(y, TOP, BOTTOM);
+        x = (int)Utils.clamp(x, LEFT, RIGHT);
+        y = (int)Utils.clamp(y, TOP, BOTTOM);
 
     }
 
@@ -126,17 +126,7 @@ public class Player {
 
     }
 
-    private float clamp(float value, float min, float max) {
-        if (value < min) {
-            return min;
-        }
 
-        if (value > max) {
-            return  max;
-        }
-
-        return value;
-    }
 
 
 }
