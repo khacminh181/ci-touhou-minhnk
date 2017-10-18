@@ -18,7 +18,7 @@ public class Enemy {
     final int LEFT = 0;
     final int RIGHT = 350;
     final int TOP = 0;
-    final int BOTTOM = 520;
+    final int BOTTOM = 500;
 
     long shootingTimer = System.nanoTime();
     long shootingDelay = 400;
