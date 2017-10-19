@@ -1,5 +1,6 @@
 package touhou;
 
+import bases.GameObject;
 import bases.Utils;
 
 import java.awt.*;
@@ -7,12 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player {
-    BufferedImage image;
-
-    public int x = 182;
-    public int y = 520;
-
+public class Player extends GameObject {
 
     boolean rightPressed;
     boolean leftPressed;
@@ -28,15 +24,16 @@ public class Player {
     final int TOP = 0;
     final int BOTTOM = 520;
 
-    long shootingTimer = System.nanoTime();
-    long shootingDelay = 100;
+//    long shootingTimer = System.nanoTime();
+//    long shootingDelay = 100;
+
+    boolean spellDisabled = false;
+    final int COOL_DOWN_TIME = 10;
 
     public Player() {
+        x = 182;
+        y = 520;
         image = Utils.loadImage("assets/images/players/straight/0.png");
-    }
-
-    public void render(Graphics graphics) {
-        graphics.drawImage(image, x, y, null);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -84,6 +81,11 @@ public class Player {
     }
 
     public void run() {
+        move();
+        shoot();
+    }
+
+    private void move() {
         int vx = 0;
         int vy = 0;
 
@@ -108,24 +110,40 @@ public class Player {
 
         x = (int)Utils.clamp(x, LEFT, RIGHT);
         y = (int)Utils.clamp(y, TOP, BOTTOM);
-
     }
 
-    public void shoot(ArrayList<PlayerSpell> spells) {
-        if (xPressed) {
-            long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
-            if (elapsed > shootingDelay) {
-                PlayerSpell newSpell = new PlayerSpell();
-                newSpell.x = x;
-                newSpell.y = y;
+    int coolDownCount;
 
-                spells.add(newSpell);
-                shootingTimer = System.nanoTime();
+    public void shoot() {
+        if (spellDisabled) {
+            coolDownCount++;
+            if (coolDownCount >= COOL_DOWN_TIME) {
+                spellDisabled = false;
+                coolDownCount = 0;
             }
+            return;
         }
+
+        if (xPressed) {
+            PlayerSpell newSpell = new PlayerSpell();
+            newSpell.x = x;
+            newSpell.y = y;
+
+            GameObject.add(newSpell);
+
+            spellDisabled = true;
+        }
+//        if (xPressed) {
+//            long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
+//            if (elapsed > shootingDelay) {
+//                PlayerSpell newSpell = new PlayerSpell();
+//                newSpell.x = x;
+//                newSpell.y = y;
+//
+//                spells.add(newSpell);
+//                shootingTimer = System.nanoTime();
+//            }
+//        }
     }
-
-
-
 
 }
