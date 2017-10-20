@@ -1,18 +1,12 @@
 package touhou;
 
+import bases.GameObject;
 import bases.Utils;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Enemy {
-    BufferedImage image;
-
-    int x = 134;
-    int y = 143;
-
+public class Enemy extends GameObject{
     final int SPEED = 2;
 
     final int LEFT = 0;
@@ -29,14 +23,12 @@ public class Enemy {
 
 
     public Enemy() {
+        x = 134;
+        y = 143;
         image = Utils.loadImage("assets/images/enemies/level0/black/0.png");
     }
 
-    public void render(Graphics graphics) {
-        graphics.drawImage(image, x, y, null);
-    }
-
-    public void randomRun() {
+    public void randomMove() {
         if (System.currentTimeMillis() - lastTurn >= 1000) {
             Random random = new Random();
             this.index = random.nextInt(8);
@@ -44,12 +36,6 @@ public class Enemy {
 
             lastTurn = System.currentTimeMillis();
         }
-
-
-    }
-
-    public void run() {
-        randomRun();
         switch (index) {
             case 0 : {
                 x += SPEED;
@@ -90,16 +76,23 @@ public class Enemy {
         }
         x = (int)Utils.clamp(x, LEFT, RIGHT);
         y = (int)Utils.clamp(y, TOP, BOTTOM);
+
+
     }
 
-    public void shoot(ArrayList<EnemyBullet> bullets) {
+    public void run() {
+        randomMove();
+        shoot();
+    }
+
+    public void shoot() {
         long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
         if (elapsed > shootingDelay) {
             EnemyBullet newBullet = new EnemyBullet();
             newBullet.x = x;
             newBullet.y = y;
 
-            bullets.add(newBullet);
+            GameObject.add(newBullet);
             shootingTimer = System.nanoTime();
         }
     }

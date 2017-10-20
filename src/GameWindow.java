@@ -23,7 +23,7 @@ public class GameWindow extends JFrame{
             public void windowOpened(WindowEvent e) {
 
             }
-test
+
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
