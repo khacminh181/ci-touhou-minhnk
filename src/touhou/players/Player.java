@@ -1,12 +1,10 @@
-package touhou;
+package touhou.players;
 
 import bases.GameObject;
 import bases.Utils;
+import bases.Vector2D;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends GameObject {
 
@@ -20,9 +18,9 @@ public class Player extends GameObject {
     final int SPEED = 5; // final = const
 
     final int LEFT = 0;
-    final int RIGHT = 360;
+    final int RIGHT = 384;
     final int TOP = 0;
-    final int BOTTOM = 520;
+    final int BOTTOM = 550;
 
 //    long shootingTimer = System.nanoTime();
 //    long shootingDelay = 100;
@@ -31,8 +29,8 @@ public class Player extends GameObject {
     final int COOL_DOWN_TIME = 10;
 
     public Player() {
-        x = 182;
-        y = 520;
+        position.x = 182;
+        position.y = 520;
         image = Utils.loadImage("assets/images/players/straight/0.png");
     }
 
@@ -85,31 +83,31 @@ public class Player extends GameObject {
         shoot();
     }
 
+    Vector2D velocity = new Vector2D();
+
     private void move() {
-        int vx = 0;
-        int vy = 0;
+        velocity.set(0, 0);
 
         if (rightPressed) {
-            vx += SPEED;
+            velocity.x += SPEED;
         }
 
         if (leftPressed) {
-            vx -=SPEED;
+            velocity.x -=SPEED;
         }
 
         if (downPressed) {
-            vy += SPEED;
+            velocity.y += SPEED;
         }
 
         if (upPressed) {
-            vy -= SPEED;
+            velocity.y -= SPEED;
         }
 
-        x += vx;
-        y += vy;
+        position.addUp(velocity);
 
-        x = (int)Utils.clamp(x, LEFT, RIGHT);
-        y = (int)Utils.clamp(y, TOP, BOTTOM);
+        position.x = (int)Utils.clamp(position.x, LEFT, RIGHT);
+        position.y = (int)Utils.clamp(position.y, TOP, BOTTOM);
     }
 
     int coolDownCount;
@@ -126,8 +124,7 @@ public class Player extends GameObject {
 
         if (xPressed) {
             PlayerSpell newSpell = new PlayerSpell();
-            newSpell.x = x;
-            newSpell.y = y;
+            newSpell.position.set(this.position);
 
             GameObject.add(newSpell);
 

@@ -1,17 +1,20 @@
-package touhou;
+package touhou.enemies;
 
 import bases.GameObject;
 import bases.Utils;
+import bases.physics.BoxCollieder;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Enemy extends GameObject{
+
+    public BoxCollieder boxCollieder;
+
     final int SPEED = 2;
 
     final int LEFT = 0;
-    final int RIGHT = 350;
-    final int TOP = 0;
+    final int RIGHT = 384;
+    final int TOP = 25;
     final int BOTTOM = 500;
 
     long shootingTimer = System.nanoTime();
@@ -23,9 +26,8 @@ public class Enemy extends GameObject{
 
 
     public Enemy() {
-        x = 134;
-        y = 143;
         image = Utils.loadImage("assets/images/enemies/level0/black/0.png");
+        boxCollieder = new BoxCollieder(30, 30);
     }
 
     public void randomMove() {
@@ -38,44 +40,40 @@ public class Enemy extends GameObject{
         }
         switch (index) {
             case 0 : {
-                x += SPEED;
+                position.addUp(SPEED, 0);
                 break;
             }
             case 1 : {
-                x -= SPEED;
+                position.subtractBy(SPEED, 0);
                 break;
             }
             case 2 : {
-                y += SPEED;
+                position.addUp(0, SPEED);
                 break;
             }
             case 3 : {
-                y -= SPEED;
+                position.subtractBy(0, SPEED);
                 break;
             }
             case 4 : {
-                x += SPEED;
-                y += SPEED;
+                position.addUp(SPEED, SPEED);
                 break;
             }
             case 5 : {
-                x += SPEED;
-                y -= SPEED;
+                position.addUp(SPEED, -SPEED);
                 break;
             }
             case 6 : {
-                x -= SPEED;
-                y += SPEED;
+                position.addUp(-SPEED, SPEED);
                 break;
             }
             case 7 : {
-                x -= SPEED;
-                y -= SPEED;
+                position.subtractBy(SPEED, SPEED);
                 break;
             }
         }
-        x = (int)Utils.clamp(x, LEFT, RIGHT);
-        y = (int)Utils.clamp(y, TOP, BOTTOM);
+        position.x = (int)Utils.clamp(position.x, LEFT, RIGHT);
+        position.y = (int)Utils.clamp(position.y, TOP, BOTTOM);
 
 
     }
@@ -83,17 +81,21 @@ public class Enemy extends GameObject{
     public void run() {
         randomMove();
         shoot();
+        boxCollieder.position.set(this.position);
     }
 
     public void shoot() {
         long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
         if (elapsed > shootingDelay) {
             EnemyBullet newBullet = new EnemyBullet();
-            newBullet.x = x;
-            newBullet.y = y;
+            newBullet.position.set(this.position);
 
             GameObject.add(newBullet);
             shootingTimer = System.nanoTime();
         }
+    }
+
+    public void getHit() {
+        isActive = false;
     }
 }

@@ -8,24 +8,23 @@ import java.awt.*;
 public class Background extends GameObject {
 
     public Background() {
-        x = 0;
-        y = 0;
+        position.set(0, 0);
         image = Utils.loadImage("assets/images/background/0.png");
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(image, (int)x, (int)y, null);
-        g.drawImage(image, (int)x, (int)y - 3109, null);
+        g.drawImage(image, (int)position.x, (int)position.y, null);
+        g.drawImage(image, (int)position.x, (int)position.y - 3109, null);
     }
 
     @Override
     public void run() {
-        if (y < 3109){
-            y += 10;
+        if (position.y < 3109){
+            position.y += 1;
         }
         else {
-            y = 0;
+            position.y = 0;
         }
     }
 }

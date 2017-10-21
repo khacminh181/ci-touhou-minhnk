@@ -1,4 +1,4 @@
-package touhou;
+package touhou.enemies;
 
 import bases.GameObject;
 import bases.Utils;
@@ -15,6 +15,6 @@ public class EnemyBullet extends GameObject{
     }
 
     public void run() {
-        y += SPEED;
+        this.position.addUp(0, SPEED);
     }
 }

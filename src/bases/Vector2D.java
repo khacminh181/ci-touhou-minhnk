@@ -1,3 +1,4 @@
+package bases;
 
 import static java.lang.Math.sqrt;
 
@@ -22,6 +23,10 @@ public class Vector2D {
     public void set(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void set(Vector2D vector2D) {
+        set(vector2D.x, vector2D.y);
     }
 
     public Vector2D clone() {
@@ -52,8 +57,7 @@ public class Vector2D {
     }
 
     public void subtractBy(Vector2D vector2D) {
-        this.x -= vector2D.x;
-        this.y -= vector2D.y;
+        this.subtractBy(vector2D.x, vector2D.y);
     }
 
     public Vector2D subtract(float x, float y) {
@@ -70,5 +74,10 @@ public class Vector2D {
 
     public float length() {
         return (float)sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    public Vector2D normalize() {
+        float length = length();
+        return new Vector2D(this.x / length, this.y / length);
     }
 }
