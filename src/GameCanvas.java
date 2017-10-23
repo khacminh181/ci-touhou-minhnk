@@ -23,7 +23,7 @@ public class GameCanvas extends JPanel{
 
         //1. Create back buffer
         backBuffer = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
-        backGraphics = backBuffer.getGraphics();
+        backGraphics = backBuffer.getGraphics();// cho backbufer graphic
 
         // 2. Load Backgroud
 

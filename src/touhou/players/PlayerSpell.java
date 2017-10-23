@@ -23,7 +23,7 @@ public class PlayerSpell extends GameObject {
         this.position.subtractBy(0, SPEED);
         boxCollieder.position.set(this.position);
 
-        Enemy enemy = GameObject.collideWith(this.boxCollieder);
+        Enemy enemy = GameObject.collideWithEnemy(this.boxCollieder);
         if (enemy != null) {
             System.out.println("Hit");
             enemy.getHit();

@@ -14,10 +14,10 @@ public class GameWindow extends JFrame{
     public GameWindow() {
         this.setSize(800,600);
 
-        this.setBackground(Color.BLACK);
+        //this.setBackground(Color.BLACK);
 
         this.canvas = new GameCanvas();
-        this.setContentPane(this.canvas);
+        this.setContentPane(this.canvas);// ném canvas vào window
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -54,7 +54,7 @@ public class GameWindow extends JFrame{
 
             }
         });
-        this.setResizable(false);
+        this.setResizable(false);// không kéo màn hình
 
         this.addKeyListener(new KeyListener() {
             @Override
