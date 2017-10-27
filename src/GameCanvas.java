@@ -20,7 +20,8 @@ public class GameCanvas extends JPanel{
 
     Background background = new Background();
 
-
+    Sphere sphereLeft = new Sphere();
+    Sphere sphereRight = new Sphere();
     public GameCanvas() {
 
         //1. Create back buffer
@@ -33,7 +34,8 @@ public class GameCanvas extends JPanel{
         GameObject.add(player);
         GameObject.add(new EnemySpawner());
         GameObject.add(enemy);
-
+        GameObject.add(sphereLeft);
+        GameObject.add(sphereRight);
 
     }
 
@@ -53,6 +55,12 @@ public class GameCanvas extends JPanel{
 
     public void run() {
         GameObject.runAll();
+        sphereLeft.run(player.position.x - 25, player.position.y);
+        sphereRight.run(player.position.x + 25, player.position.y);
+        if (!player.isActive) {
+            sphereRight.isActive = false;
+            sphereLeft.isActive = false;
+        }
     }
 
 }

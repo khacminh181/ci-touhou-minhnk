@@ -5,6 +5,7 @@ import bases.physics.PhysicsBody;
 import touhou.enemies.Enemy;
 import touhou.players.Player;
 import touhou.players.PlayerSpell;
+import touhou.players.Sphere;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class GameObject {
     public Vector2D position;
     public BufferedImage image;
     public boolean isActive;
+    static int count = 0;
 
 
     static Vector<GameObject> gameObjects = new Vector<>();
@@ -22,6 +24,7 @@ public class GameObject {
 
     public static void runAll() {
         for (GameObject gameObject: gameObjects) {
+            System.out.println(gameObjects.size());
             if (gameObject.isActive) {
                 gameObject.run();
             }

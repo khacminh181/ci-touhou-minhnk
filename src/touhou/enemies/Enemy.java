@@ -90,17 +90,11 @@ public class Enemy extends GameObject implements PhysicsBody{
         shoot();
         boxCollieder.position.set(this.position);
         this.playerDamage.run(this);
+        deactiveIfNeded();
     }
 
     public void shoot() {
-//        long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
-//        if (elapsed > shootingDelay) {
-//            EnemyBullet newBullet = new EnemyBullet();
-//            newBullet.position.set(this.position);
-//
-//            GameObject.add(newBullet);
-//            shootingTimer = System.nanoTime();
-//        }
+
         if (bulletDisable) {
             coolDownCount++;
             if (coolDownCount >= COOL_DOWN_TIME) {
@@ -126,4 +120,12 @@ public class Enemy extends GameObject implements PhysicsBody{
     public BoxCollieder getBoxCollider() {
         return boxCollieder;
     }
+
+    private void deactiveIfNeded() {
+        if (position.y > 600) {
+            this.isActive = false;
+        }
+    }
 }
+
+

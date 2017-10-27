@@ -30,16 +30,12 @@ public class Player extends GameObject implements PhysicsBody{
 
     PlayerCastSpell playerCastSpell;
 
-    Sphere sphereLeft;
-    Sphere sphereRight;
+
 
     public Player() {
         // PlayerCastSpell
         playerCastSpell = new PlayerCastSpell();
 
-        //Sphere
-        sphereLeft = new Sphere();
-        sphereRight = new Sphere();
 
         position.x = 182;
         position.y = 520;
@@ -52,11 +48,6 @@ public class Player extends GameObject implements PhysicsBody{
         move();
 
         playerCastSpell.run(this);
-
-        GameObject.add(sphereLeft);
-        GameObject.add(sphereRight);
-        sphereLeft.run(this.position.x - 25, this.position.y);
-        sphereRight.run(this.position.x + 25, this.position.y);
 
         boxCollieder.position.set(this.position);
     }
