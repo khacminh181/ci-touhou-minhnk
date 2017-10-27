@@ -3,10 +3,11 @@ package touhou.enemies;
 import bases.GameObject;
 import bases.Utils;
 import bases.physics.BoxCollieder;
+import bases.physics.PhysicsBody;
 
 import java.util.Random;
 
-public class Enemy extends GameObject{
+public class Enemy extends GameObject implements PhysicsBody{
 
     public BoxCollieder boxCollieder;
 
@@ -23,11 +24,17 @@ public class Enemy extends GameObject{
     long lastTurn = System.currentTimeMillis();
     int index ;
 
+    PlayerDamage playerDamage;
 
+    //Enemy shoot
+    boolean bulletDisable = false;
+    final int COOL_DOWN_TIME = 50;
+    int coolDownCount;
 
     public Enemy() {
         image = Utils.loadImage("assets/images/enemies/level0/black/0.png");
         boxCollieder = new BoxCollieder(30, 30);
+        this.playerDamage = new PlayerDamage();
     }
 
     public void randomMove() {
@@ -82,20 +89,41 @@ public class Enemy extends GameObject{
         randomMove();
         shoot();
         boxCollieder.position.set(this.position);
+        this.playerDamage.run(this);
     }
 
     public void shoot() {
-        long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
-        if (elapsed > shootingDelay) {
-            EnemyBullet newBullet = new EnemyBullet();
-            newBullet.position.set(this.position);
-
-            GameObject.add(newBullet);
-            shootingTimer = System.nanoTime();
+//        long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
+//        if (elapsed > shootingDelay) {
+//            EnemyBullet newBullet = new EnemyBullet();
+//            newBullet.position.set(this.position);
+//
+//            GameObject.add(newBullet);
+//            shootingTimer = System.nanoTime();
+//        }
+        if (bulletDisable) {
+            coolDownCount++;
+            if (coolDownCount >= COOL_DOWN_TIME) {
+                bulletDisable = false;
+                coolDownCount = 0;
+            }
+            return;
         }
+
+        EnemyBullet newEnemyBullet = GameObject.recycle(EnemyBullet.class);
+        newEnemyBullet.position.set(this.position);
+
+        bulletDisable = true;
+
     }
 
     public void getHit() {
         isActive = false;
+    }
+
+
+    @Override
+    public BoxCollieder getBoxCollider() {
+        return boxCollieder;
     }
 }

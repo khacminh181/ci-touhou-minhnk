@@ -5,17 +5,15 @@ import bases.Utils;
 import bases.physics.BoxCollieder;
 import touhou.enemies.Enemy;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-public class PlayerSpell extends GameObject {
+public class SphereBullet extends GameObject{
 
     final int SPEED = 20;
     BoxCollieder boxCollieder;
 
-    public PlayerSpell() {
-        image = Utils.loadImage("assets/images/player-bullets/a/0.png");
+    public SphereBullet() {
+        image = Utils.loadImage("assets/images/sphere-bullets/0.png");
         boxCollieder = new BoxCollieder(20, 20);
     }
 
@@ -25,7 +23,7 @@ public class PlayerSpell extends GameObject {
 
         Enemy enemy = GameObject.collideWith(this.boxCollieder, Enemy.class);
         if (enemy != null) {
-            System.out.println("Hit");
+            System.out.println("Sphere Hit Enemy");
             enemy.getHit();
             this.isActive = false;
 
@@ -39,4 +37,6 @@ public class PlayerSpell extends GameObject {
             this.isActive = false;
         }
     }
+
+
 }

@@ -1,9 +1,12 @@
 package bases;
 
 import bases.physics.BoxCollieder;
+import bases.physics.PhysicsBody;
 import touhou.enemies.Enemy;
 import touhou.players.Player;
+import touhou.players.PlayerSpell;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -41,32 +44,46 @@ public class GameObject {
         newGameObjects.add(gameObject);
     }
 
-    public static Enemy collideWithEnemy(BoxCollieder boxCollieder) {
+    // Tim trong tat ca cac game object
+    // Neu gap 1 object thoa man 2 dieu kien :
+    // 1. Game object nay la playerspell
+    // 2. isActive == false
+    // thi return object nay
+    // neu khong tim thay
+    // Tu khoi tao 1 PlayerSpell moi => return
+    public static <T extends GameObject>T recycle(Class<T> cls) {
         for (GameObject gameObject : gameObjects) {
-            if (gameObject.isActive && gameObject instanceof Enemy) {
-                Enemy enemy = (Enemy)gameObject;
-                if (enemy.boxCollieder.collideWith(boxCollieder)) {
-                    return enemy;
-                }
+            if (!(gameObject.getClass().equals(cls))) continue;
+            if (!gameObject.isActive) {
+                (gameObject).isActive = true;
+                return (T) gameObject;
             }
+        }
+
+        try {
+            T newGameObject = cls.newInstance(); // = new
+            add(newGameObject);
+            return newGameObject;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static <T extends PhysicsBody> T collideWith(BoxCollieder boxCollieder, Class<T> cls) {
+        for (GameObject gameObject : gameObjects) {
+           if (!gameObject.isActive) continue;
+           if (!(gameObject instanceof PhysicsBody)) continue;
+           if (!(gameObject.getClass().equals(cls))) continue;
+
+           BoxCollieder otherBoxCollider = ((PhysicsBody) gameObject).getBoxCollider();
+           if (otherBoxCollider.collideWith(boxCollieder)) {
+               return (T)gameObject;
+           }
         }
 
         return null;
     }
-
-    public static Player collideWithPlayer(BoxCollieder boxCollieder) {
-        for (GameObject gameObject : gameObjects) {
-            if (gameObject.isActive && gameObject instanceof Player) {
-                Player player = (Player) gameObject;
-                if (player.boxCollieder.collideWith(boxCollieder)) {
-                    return player;
-                }
-            }
-        }
-
-        return null;
-    }
-
 
     public GameObject() {
         position = new Vector2D();

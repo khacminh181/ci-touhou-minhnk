@@ -4,15 +4,12 @@ import bases.GameObject;
 import bases.Utils;
 import bases.Vector2D;
 import bases.physics.BoxCollieder;
+import bases.physics.PhysicsBody;
+import touhou.Inputs.InputManager;
 
 import java.awt.event.KeyEvent;
 
-public class Player extends GameObject {
-
-    boolean rightPressed;
-    boolean leftPressed;
-    boolean downPressed;
-    boolean upPressed;
+public class Player extends GameObject implements PhysicsBody{
 
     boolean xPressed;
 
@@ -30,63 +27,37 @@ public class Player extends GameObject {
 //    long shootingTimer = System.nanoTime();
 //    long shootingDelay = 100;
 
-    boolean spellDisabled = false;
-    final int COOL_DOWN_TIME = 10;
+
+    PlayerCastSpell playerCastSpell;
+
+    Sphere sphereLeft;
+    Sphere sphereRight;
 
     public Player() {
+        // PlayerCastSpell
+        playerCastSpell = new PlayerCastSpell();
+
+        //Sphere
+        sphereLeft = new Sphere();
+        sphereRight = new Sphere();
+
         position.x = 182;
         position.y = 520;
         image = Utils.loadImage("assets/images/players/straight/0.png");
-        boxCollieder = new BoxCollieder(30, 30);
+        boxCollieder = new BoxCollieder(8, 8);
     }
 
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightPressed = true;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            leftPressed = true;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            downPressed = true;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            upPressed = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_X) {
-            xPressed = true;
-        }
-
-    }
-
-
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightPressed = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            leftPressed = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            downPressed = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            upPressed = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_X) {
-            xPressed = false;
-        }
-    }
 
     public void run() {
         move();
-        shoot();
+
+        playerCastSpell.run(this);
+
+        GameObject.add(sphereLeft);
+        GameObject.add(sphereRight);
+        sphereLeft.run(this.position.x - 25, this.position.y);
+        sphereRight.run(this.position.x + 25, this.position.y);
+
         boxCollieder.position.set(this.position);
     }
 
@@ -95,19 +66,21 @@ public class Player extends GameObject {
     private void move() {
         velocity.set(0, 0);
 
-        if (rightPressed) {
+        InputManager inputManager = InputManager.instance;
+
+        if (inputManager.rightPressed) {
             velocity.x += SPEED;
         }
 
-        if (leftPressed) {
+        if (inputManager.leftPressed) {
             velocity.x -=SPEED;
         }
 
-        if (downPressed) {
+        if (inputManager.downPressed) {
             velocity.y += SPEED;
         }
 
-        if (upPressed) {
+        if (inputManager.upPressed) {
             velocity.y -= SPEED;
         }
 
@@ -117,44 +90,15 @@ public class Player extends GameObject {
         position.y = (int)Utils.clamp(position.y, TOP, BOTTOM);
     }
 
-    int coolDownCount;
-
-    public void shoot() {
-        if (spellDisabled) {
-            coolDownCount++;
-            if (coolDownCount >= COOL_DOWN_TIME) {
-                spellDisabled = false;
-                coolDownCount = 0;
-            }
-            return;
-        }
-
-        if (xPressed) {
-            PlayerSpell newSpell = new PlayerSpell();
-            newSpell.position.set(this.position);
-
-            GameObject.add(newSpell);
-
-            spellDisabled = true;
-        }
-
-//        if (xPressed) {
-//            long elapsed = (System.nanoTime() - shootingTimer) / 1000000; // tgian chạy = currentTime - shootingTimer
-//            if (elapsed > shootingDelay) {
-//                PlayerSpell newSpell = new PlayerSpell();
-//                newSpell.x = x;
-//                newSpell.y = y;
-//
-//                spells.add(newSpell);
-//                shootingTimer = System.nanoTime();
-//            }
-//        }
-    }
 
     public void getHit() {
         isActive = false;
+        //TODO : Change screen to Gameover
     }
 
 
-
+    @Override
+    public BoxCollieder getBoxCollider() {
+        return boxCollieder;
+    }
 }
