@@ -31,7 +31,6 @@ public class Player extends GameObject implements PhysicsBody{
     PlayerCastSpell playerCastSpell;
 
 
-
     public Player() {
         // PlayerCastSpell
         playerCastSpell = new PlayerCastSpell();

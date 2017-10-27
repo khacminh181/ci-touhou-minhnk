@@ -13,8 +13,6 @@ public class Sphere extends GameObject{
     boolean spellDisabled = false;
     final int COOL_DOWN_TIME = 50;
     int coolDownCount;
-    final int SPEED = 5; // final = const
-
 
 
 
@@ -29,32 +27,6 @@ public class Sphere extends GameObject{
         shoot();
     }
 
-    Vector2D velocity = new Vector2D();
-
-
-    private void move() {
-        velocity.set(0, 0);
-
-        InputManager inputManager = InputManager.instance;
-
-        if (inputManager.rightPressed) {
-            velocity.x += SPEED;
-        }
-
-        if (inputManager.leftPressed) {
-            velocity.x -=SPEED;
-        }
-
-        if (inputManager.downPressed) {
-            velocity.y += SPEED;
-        }
-
-        if (inputManager.upPressed) {
-            velocity.y -= SPEED;
-        }
-
-        position.addUp(velocity);
-    }
 
     private void shoot() {
 
@@ -75,7 +47,6 @@ public class Sphere extends GameObject{
         }
 
     }
-
 
 
 }
